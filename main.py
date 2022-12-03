@@ -27,7 +27,13 @@ class Board:
 
     # cell - кортеж (x, y)
     def on_click(self, cell):
-        print(cell)
+        for i in range(self.width):
+            self.board[cell[1]][i] = (self.board[cell[1]][i] + 1) % 2
+        for i in range(self.height):
+            # чтобы не перекрашивать дважды
+            if i == cell[1]:
+                continue
+            self.board[i][cell[0]] = (self.board[i][cell[0]] + 1) % 2
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
@@ -37,8 +43,12 @@ class Board:
             print(cell)  # которая None
 
     def render(self, screen):
+        colors = [pygame.Color("black"), pygame.Color("white")]
         for y in range(self.height):
             for x in range(self.width):
+                pygame.draw.rect(screen, colors[self.board[y][x]],
+                                 (x * self.cell_size + self.left, y * self.cell_size + self.top,
+                                  self.cell_size, self.cell_size))  # заливка
                 pygame.draw.rect(screen, (100, 125, 250),
                                  (self.left + x * self.cell_size, self.top + y * self.cell_size,
                                  self.cell_size, self.cell_size), 2)
@@ -48,7 +58,7 @@ def main():
     pygame.init()
     size = 500, 500
     screen = pygame.display.set_mode(size)
-    pygame.display.set_caption('поле 5 на 7')
+    pygame.display.set_caption('Чёрное белое')
     # поле 5 на 7
     board = Board(5, 7)
     running = True
