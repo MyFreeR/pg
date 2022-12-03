@@ -19,7 +19,11 @@ class Board:
         self.cell_size = cell_size
 
     def render(self, screen):
-        pass  # Добавьте в класс Board метод render(screen), принимающий в себя холст
+        for y in range(self.height):
+            for x in range(self.width):
+                pygame.draw.rect(screen, (100, 125, 250),
+                                 (self.left + x * self.cell_size, self.top + y * self.cell_size,
+                                 self.cell_size, self.cell_size), 2)
 
 
 def main():
